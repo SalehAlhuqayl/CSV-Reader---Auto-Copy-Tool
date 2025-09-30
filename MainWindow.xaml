@@ -1,0 +1,80 @@
+<Window x:Class="CsvReader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="CSV Reader &amp; Auto-Copy Tool" 
+        Height="400" 
+        Width="600"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- File Selection Area -->
+        <StackPanel Grid.Row="0" Margin="10">
+            <Button x:Name="BrowseCsvButton" 
+                    Content="Browse CSV File" 
+                    Padding="10,5" 
+                    Click="BrowseCsvButton_Click"
+                    HorizontalAlignment="Left"/>
+            <TextBlock x:Name="FilePathText" 
+                       Margin="0,5,0,0" 
+                       Text="No file selected" 
+                       FontStyle="Italic" 
+                       Foreground="Gray"/>
+        </StackPanel>
+
+        <!-- Current Cell Display Area -->
+        <Border Grid.Row="1" 
+                Margin="10" 
+                BorderBrush="LightGray" 
+                BorderThickness="2" 
+                CornerRadius="5">
+            <Grid>
+                <TextBlock x:Name="CurrentCellDisplay" 
+                           Text="Load a CSV file to begin" 
+                           FontSize="24" 
+                           TextAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           Margin="20"
+                           Cursor="Hand"
+                           MouseLeftButtonDown="CurrentCellDisplay_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Navigation Controls -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    Margin="10">
+            <Button x:Name="BackButton" 
+                    Content="← Back" 
+                    Padding="20,10" 
+                    Margin="5"
+                    Click="BackButton_Click"
+                    IsEnabled="False"/>
+            <Button x:Name="NextButton" 
+                    Content="Next →" 
+                    Padding="20,10" 
+                    Margin="5"
+                    Click="NextButton_Click"
+                    IsEnabled="False"/>
+        </StackPanel>
+
+        <!-- Status Bar -->
+        <StatusBar Grid.Row="3">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusText" Text="Ready"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
