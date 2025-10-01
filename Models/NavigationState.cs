@@ -8,13 +8,28 @@ namespace CsvReader.Models
     public class NavigationState
     {
         public List<List<string>> CsvData { get; }
+        public List<string>? HeaderRow { get; private set; }
+        public bool HasHeader { get; private set; }
         public int CurrentRow { get; set; }
         public int CurrentColumn { get; set; }
 
-        public NavigationState(List<List<string>> csvData)
+        public NavigationState(List<List<string>> csvData, bool hasHeader = true)
         {
             CsvData = csvData;
-            CurrentRow = 0;
+            HasHeader = hasHeader;
+            
+            // Extract header row if present
+            if (hasHeader && csvData.Count > 0)
+            {
+                HeaderRow = csvData[0];
+                CurrentRow = 1; // Start from first data row
+            }
+            else
+            {
+                HeaderRow = null;
+                CurrentRow = 0;
+            }
+            
             CurrentColumn = 0;
         }
 
@@ -73,6 +88,23 @@ namespace CsvReader.Models
                 return 0;
 
             return CsvData[row].Count;
+        }
+
+        /// <summary>
+        /// Get the header name for the current column
+        /// </summary>
+        public string GetCurrentHeader()
+        {
+            if (!HasHeader || HeaderRow == null)
+                return $"Column {CurrentColumn + 1}";
+
+            if (CurrentColumn < 0 || CurrentColumn >= HeaderRow.Count)
+                return $"Column {CurrentColumn + 1}";
+
+            var headerValue = HeaderRow[CurrentColumn];
+            return string.IsNullOrWhiteSpace(headerValue) 
+                ? $"Column {CurrentColumn + 1}" 
+                : headerValue;
         }
     }
 }

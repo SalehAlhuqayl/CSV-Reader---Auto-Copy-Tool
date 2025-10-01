@@ -1,30 +1,42 @@
 # CSV Reader & Auto-Copy Tool
 
-A simple Windows desktop app that reads CSV files and automatically copies cell values to your clipboard.
+A powerful Windows desktop app that reads CSV and Excel files with automatic clipboard copying and smart navigation.
 
-## What Does It Do?
+## ✨ What Does It Do?
 
-This tool helps you work with CSV files by:
-- Reading CSV files row by row
-- Showing each cell's value on screen
-- Automatically copying each cell to your clipboard
-- Skipping empty cells so you don't waste time
-- Letting you go back if you need to
+This tool helps you work with data files by:
+- 📊 Reading CSV and Excel (.xlsx) files
+- 🏷️ **Displaying column headers** with each cell value
+- 📋 Automatically copying each cell to your clipboard
+- ⏭️ Skipping empty cells automatically
+- ⌨️ Full keyboard shortcut support
+- 🎨 Light and dark theme modes
+- 🔄 Smart navigation with Back/Next controls
 
-## How to Use
+## 🚀 How to Use
 
 1. **Open the app** - Double-click the CsvReader.exe file
-2. **Load your CSV file** - Click "Browse CSV File" and choose your file
-3. **Navigate through cells**:
-   - Click "Next" to move to the next cell (it copies automatically!)
-   - Click "Back" to go to the previous cell
-   - Click on the displayed text to copy it again
-4. **Paste wherever you need** - The current cell value is always on your clipboard
+2. **Load your file** - Click "📁 Browse File" and select a CSV or Excel file
+3. **Configure headers** - Check "First row is header" if your file has column names
+4. **Navigate through cells**:
+   - Press **Space**, **→** or **↓** to move forward
+   - Press **←** or **↑** to move backward
+   - Or use the "Next" and "Back" buttons
+5. **Use the data** - Each cell is automatically copied to clipboard
+6. **Customize** - Toggle dark mode with the "🌙 Dark" button
+7. **Get help** - Press **F1** or click "❓ Help"
 
-## Requirements
+## ⌨️ Keyboard Shortcuts
+
+- **Right Arrow / Down Arrow / Space** → Next cell
+- **Left Arrow / Up Arrow** → Previous cell
+- **F1** → Show help dialog
+- **Ctrl+V** → Paste copied value (in any app)
+
+## 📋 Requirements
 
 - Windows 10 or Windows 11
-- .NET 7.0 Runtime (download from Microsoft if you don't have it)
+- .NET 9.0 Runtime (download from Microsoft if you don't have it)
 
 ## Building from Source
 
@@ -41,21 +53,32 @@ Or build a release version:
 dotnet publish -c Release -r win-x64 --self-contained
 ```
 
-## Features
+## ✨ Features
 
-✅ Automatic clipboard copying  
-✅ Empty cell skipping  
-✅ Next/Back navigation  
-✅ Manual re-copy by clicking  
-✅ Position tracking (row & column display)  
-✅ Simple, clean interface  
+### Core Features
+✅ **CSV & Excel Support** - Works with .csv and .xlsx files  
+✅ **Header Display** - Shows column names above each cell  
+✅ **Automatic Clipboard** - Instant copy on navigation  
+✅ **Smart Empty Cell Skip** - Only shows cells with data  
+✅ **Bidirectional Navigation** - Move forward and backward  
+✅ **Manual Copy** - Click cell to re-copy  
 
-## Tips
+### User Experience
+✅ **Keyboard Shortcuts** - Arrow keys, Space, F1  
+✅ **Dark Mode** - Easy on the eyes theme toggle  
+✅ **Position Tracking** - Always know where you are  
+✅ **Help System** - Built-in help dialog  
+✅ **Clean Interface** - Distraction-free design  
 
-- The app skips empty cells automatically, so you'll only see cells with data
-- The status bar shows your current position (row and column number)
-- You can click on the displayed text to copy it again without navigating
-- The app reads all CSV formats - headers are treated as regular data
+## 💡 Tips
+
+- **Header rows make it easier!** - Enable "First row is header" to see column names
+- The app skips empty cells automatically
+- The status bar shows your current position and header name
+- Click on the displayed text to re-copy without navigating
+- Use keyboard shortcuts for faster workflow
+- Toggle dark mode for comfortable viewing in any lighting
+- The app works with both CSV and Excel (.xlsx) files seamlessly
 
 ## Troubleshooting
 
@@ -67,13 +90,22 @@ dotnet publish -c Release -r win-x64 --self-contained
 - Another program might be using the clipboard
 - Try clicking the cell display to copy manually
 
-## Future Features
+## 🎯 New in This Version
 
-We're planning to add:
-- Support for Excel files (.xlsx)
-- Keyboard shortcuts for faster navigation
-- Dark mode theme
-- Remember your last file and position
+- ✨ **Header Row Support** - See column names with each value ✅
+- 📊 **Excel (.xlsx) Support** - Works with Excel files ⏳ (temporarily disabled - see note below)
+- 🎨 **Dark Mode** - Beautiful dark theme toggle ✅
+- ⌨️ **Keyboard Shortcuts** - Arrow keys, Space, F1 ✅
+- ❓ **Help System** - Built-in help dialog ✅
+
+> **Note:** Excel support is temporarily disabled due to NuGet package download issues. All other features are working perfectly! Excel can be re-enabled once the network issue is resolved. See `UPGRADE_NOTES.md` for details.
+
+## 🔮 Future Enhancements
+
+- Remember last file and position
+- Multiple worksheet support for Excel
+- Export filtered data
+- Custom keyboard shortcuts
 
 ## License
 

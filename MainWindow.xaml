@@ -5,11 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="CSV Reader &amp; Auto-Copy Tool" 
-        Height="400" 
-        Width="600"
-        WindowStartupLocation="CenterScreen">
+        Height="450" 
+        Width="650"
+        WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown"
+        x:Name="MainWindowElement">
     
-    <Grid>
+    <Window.Resources>
+        <!-- Light Theme (Default) -->
+        <SolidColorBrush x:Key="WindowBackground" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextForeground" Color="#000000"/>
+        <SolidColorBrush x:Key="HeaderForeground" Color="#555555"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC"/>
+        <SolidColorBrush x:Key="SubtleForeground" Color="#888888"/>
+    </Window.Resources>
+    
+    <Grid x:Name="MainGrid" Background="{StaticResource WindowBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -19,36 +30,67 @@
 
         <!-- File Selection Area -->
         <StackPanel Grid.Row="0" Margin="10">
-            <Button x:Name="BrowseCsvButton" 
-                    Content="Browse CSV File" 
-                    Padding="10,5" 
-                    Click="BrowseCsvButton_Click"
-                    HorizontalAlignment="Left"/>
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button x:Name="BrowseCsvButton" 
+                            Content="📁 Browse File" 
+                            Padding="10,5" 
+                            Click="BrowseCsvButton_Click"
+                            HorizontalAlignment="Left"/>
+                    <CheckBox x:Name="HasHeaderCheckBox"
+                              Content="First row is header"
+                              IsChecked="True"
+                              VerticalAlignment="Center"
+                              Margin="15,0,0,0"
+                              Foreground="{StaticResource TextForeground}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                    <Button x:Name="ThemeToggleButton" 
+                            Content="🌙 Dark" 
+                            Padding="10,5" 
+                            Click="ThemeToggleButton_Click"
+                            Margin="5,0"/>
+                    <Button x:Name="HelpButton" 
+                            Content="❓ Help" 
+                            Padding="10,5" 
+                            Click="HelpButton_Click"/>
+                </StackPanel>
+            </DockPanel>
             <TextBlock x:Name="FilePathText" 
                        Margin="0,5,0,0" 
                        Text="No file selected" 
                        FontStyle="Italic" 
-                       Foreground="Gray"/>
+                       Foreground="{StaticResource SubtleForeground}"/>
         </StackPanel>
 
         <!-- Current Cell Display Area -->
         <Border Grid.Row="1" 
                 Margin="10" 
-                BorderBrush="LightGray" 
+                BorderBrush="{StaticResource BorderBrush}" 
                 BorderThickness="2" 
                 CornerRadius="5">
-            <Grid>
+            <StackPanel VerticalAlignment="Center" 
+                        HorizontalAlignment="Center"
+                        Margin="20"
+                        Cursor="Hand"
+                        MouseLeftButtonDown="CurrentCellDisplay_Click">
+                <!-- Header Label -->
+                <TextBlock x:Name="HeaderLabel" 
+                           Text="" 
+                           FontSize="16" 
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource HeaderForeground}"
+                           TextAlignment="Center" 
+                           Margin="0,0,0,10"
+                           Visibility="Collapsed"/>
+                <!-- Cell Value -->
                 <TextBlock x:Name="CurrentCellDisplay" 
                            Text="Load a CSV file to begin" 
                            FontSize="24" 
-                           TextAlignment="Center" 
-                           VerticalAlignment="Center" 
-                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
                            TextWrapping="Wrap"
-                           Margin="20"
-                           Cursor="Hand"
-                           MouseLeftButtonDown="CurrentCellDisplay_Click"/>
-            </Grid>
+                           Foreground="{StaticResource TextForeground}"/>
+            </StackPanel>
         </Border>
 
         <!-- Navigation Controls -->
@@ -71,9 +113,9 @@
         </StackPanel>
 
         <!-- Status Bar -->
-        <StatusBar Grid.Row="3">
+        <StatusBar Grid.Row="3" Background="{StaticResource WindowBackground}">
             <StatusBarItem>
-                <TextBlock x:Name="StatusText" Text="Ready"/>
+                <TextBlock x:Name="StatusText" Text="Ready" Foreground="{StaticResource TextForeground}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

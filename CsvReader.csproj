@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="30.0.1" />
+    <!-- EPPlus temporarily disabled due to network issues - will add back later -->
+    <!-- <PackageReference Include="EPPlus" Version="7.0.0" /> -->
   </ItemGroup>
 
 </Project>
