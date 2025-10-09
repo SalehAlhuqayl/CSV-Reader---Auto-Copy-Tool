@@ -93,12 +93,13 @@ dotnet publish -c Release -r win-x64 --self-contained
 ## 🎯 New in This Version
 
 - ✨ **Header Row Support** - See column names with each value ✅
-- 📊 **Excel (.xlsx) Support** - Works with Excel files ⏳ (temporarily disabled - see note below)
+- 📊 **Excel (.xlsx) Support** - Works with Excel files ✅ **NOW WORKING!**
 - 🎨 **Dark Mode** - Beautiful dark theme toggle ✅
 - ⌨️ **Keyboard Shortcuts** - Arrow keys, Space, F1 ✅
+- 🚀 **Jump to Row** - Navigate directly to any row ✅ **NEW!**
 - ❓ **Help System** - Built-in help dialog ✅
 
-> **Note:** Excel support is temporarily disabled due to NuGet package download issues. All other features are working perfectly! Excel can be re-enabled once the network issue is resolved. See `UPGRADE_NOTES.md` for details.
+> **Note:** Excel support uses **built-in .NET libraries** (no external packages needed!). XLSX files are ZIP archives with XML - we read them natively using System.IO.Compression and System.Xml.Linq.
 
 ## 🔮 Future Enhancements
 

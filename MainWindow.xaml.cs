@@ -1,7 +1,6 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -17,7 +16,7 @@ namespace CsvReader
     public partial class MainWindow : Window
     {
         private CsvReaderService? _csvReaderService;
-        // // // ExcelReaderService disabled
+        private ExcelReaderService? _excelReaderService;
         private NavigationState? _navigationState;
         private CellNavigator? _cellNavigator;
         private ClipboardService? _clipboardService;
@@ -111,6 +110,7 @@ namespace CsvReader
 📂 LOADING FILES:
 • Click 'Browse File' to select a CSV or Excel (.xlsx) file
 • Check 'First row is header' if your file has column names in row 1
+• Excel files are fully supported!
 
 ⌨️ KEYBOARD SHORTCUTS:
 • Right Arrow / Down Arrow / Space → Next cell
@@ -120,6 +120,7 @@ namespace CsvReader
 🔄 NAVIGATION:
 • Empty cells are automatically skipped
 • Click 'Next' or 'Back' buttons to navigate
+• Enter row number in 'Jump to Row' box and click 'Go'
 • Current position shown in status bar
 
 📋 CLIPBOARD:
@@ -132,7 +133,8 @@ namespace CsvReader
 
 💡 TIPS:
 • Header names appear above each cell value
-• The app works with both CSV and Excel files
+• Use Jump to Row for quick navigation to specific rows
+• Dark mode works instantly - try it!
 • Navigation wraps across rows automatically
 
 Need more help? Check the README.md file";
@@ -147,8 +149,8 @@ Need more help? Check the README.md file";
         {
             var openFileDialog = new OpenFileDialog
             {
-                Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*",
-                Title = "Select a CSV File"
+                Filter = "CSV files (*.csv)|*.csv|Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*",
+                Title = "Select a File"
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -170,14 +172,9 @@ Need more help? Check the README.md file";
                 // Determine file type and load accordingly
                 if (filePath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Excel support temporarily disabled - show message
-                    MessageBox.Show("Excel support is temporarily disabled due to package download issues.\nPlease use CSV files for now, or we can add Excel support once the network issue is resolved.", 
-                                  "Excel Not Available", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                    
-                    // Uncomment when EPPlus is available:
-                    // _excelReaderService = new ExcelReaderService();
-                    // csvData = _excelReaderService.LoadExcel(filePath);
+                    // Excel support using built-in .NET libraries!
+                    _excelReaderService = new ExcelReaderService();
+                    csvData = _excelReaderService.LoadExcel(filePath);
                 }
                 else
                 {
@@ -285,6 +282,67 @@ Need more help? Check the README.md file";
             
             var dataRowNumber = _navigationState.HasHeader ? _navigationState.CurrentRow : _navigationState.CurrentRow + 1;
             StatusText.Text = $"{headerText} | Row {dataRowNumber}, Column {_navigationState.CurrentColumn + 1} - Manually copied";
+        }
+
+        /// <summary>
+        /// Handle Jump to Row button click
+        /// </summary>
+        private void JumpToRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_navigationState == null || _cellNavigator == null)
+            {
+                MessageBox.Show("Please load a file first.", "No File Loaded", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(JumpToRowTextBox.Text))
+            {
+                MessageBox.Show("Please enter a row number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(JumpToRowTextBox.Text, out int targetRow) || targetRow < 1)
+            {
+                MessageBox.Show("Please enter a valid row number (greater than 0).", "Invalid Row Number", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Adjust for header row if present
+            int actualRow = _navigationState.HasHeader ? targetRow : targetRow - 1;
+
+            if (actualRow >= _navigationState.GetRowCount())
+            {
+                MessageBox.Show($"Row {targetRow} does not exist. File has {_navigationState.GetRowCount() - (_navigationState.HasHeader ? 1 : 0)} data rows.", 
+                              "Row Out of Range", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Jump to the target row, first column
+            _navigationState.CurrentRow = actualRow;
+            _navigationState.CurrentColumn = 0;
+
+            // Find first non-empty cell in that row
+            bool foundNonEmpty = false;
+            int colCount = _navigationState.GetColumnCount(actualRow);
+            
+            for (int col = 0; col < colCount; col++)
+            {
+                if (!_navigationState.IsCellEmpty(actualRow, col))
+                {
+                    _navigationState.CurrentColumn = col;
+                    foundNonEmpty = true;
+                    break;
+                }
+            }
+
+            if (!foundNonEmpty)
+            {
+                MessageBox.Show($"Row {targetRow} appears to be empty.", "Empty Row", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Stay at the row even if empty
+            }
+
+            DisplayCurrentCell();
+            JumpToRowTextBox.Clear();
         }
     }
 }

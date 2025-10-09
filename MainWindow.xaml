@@ -110,6 +110,23 @@
                     Margin="5"
                     Click="NextButton_Click"
                     IsEnabled="False"/>
+            
+            <!-- Jump to Row -->
+            <Separator Width="20" Visibility="Hidden"/>
+            <TextBlock Text="Jump to Row:" 
+                       VerticalAlignment="Center" 
+                       Margin="5,0"
+                       Foreground="{StaticResource TextForeground}"/>
+            <TextBox x:Name="JumpToRowTextBox" 
+                     Width="60" 
+                     Padding="5" 
+                     VerticalAlignment="Center"
+                     ToolTip="Enter row number"/>
+            <Button x:Name="JumpToRowButton" 
+                    Content="Go" 
+                    Padding="15,10" 
+                    Margin="5"
+                    Click="JumpToRowButton_Click"/>
         </StackPanel>
 
         <!-- Status Bar -->
